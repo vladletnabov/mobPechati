@@ -1,0 +1,55 @@
+<ion-header-bar class="bar bar-header bar-positive">
+  <div >
+    <h1 class="title">Оформление заказа</h1>
+    <button class="button button-icon icon ion-navicon" ng-click="toggleMenu()"></button>
+  </div>
+</ion-header-bar>
+<ion-view title="Оформить заказ" id="page6">
+    <ion-content padding="true" class="has-header">
+        <h1 id="page6-heading6" style="color:#000000;">Описание заказа</h1>
+        <ion-list id="page6-list3">
+            <ion-item id="page6-list-item14">{{ typeProduct(orderSettings.getTypeProduct()) }}: {{ typeStamp(orderSettings.getTypeProduct(), orderSettings.getTypeStamp()) }}</ion-item>
+            <ion-item id="page6-list-item12">Материал: {{  typeMaterial(orderSettings.getTypeMaterial()) }}</ion-item>
+            <ion-item id="page6-list-item13">Оснастка: {{ orderSettings.getTypeOsnastka() }}</ion-item>
+            <ion-item id="page6-list-item11">Количество: {{ orderSettings.getCountProduct() }} шт</ion-item>
+            <ion-item id="page6-list-item10">Сумма заказа: {{ orderSettings.getSummOrder() }}.00 руб</ion-item>
+        </ion-list>
+        <h1 id="page6-heading7" style="color:#000000;">Доставка</h1>
+        <form id="page6-form4" class="list">
+            <!--<ion-radio id="page6-radio5" name="shipping_type"ng-model="choice">Самовывоз из офиса</ion-radio>
+            <ion-radio id="page6-radio6" name="shipping_type">Доставка до метро</ion-radio>
+            <ion-radio id="page6-radio7" name="shipping_type">Доставка по адресу</ion-radio>-->
+            <div ng-repeat="shipping in orderSettings.getShipping()">
+            <ion-radio name="shipping_type" ng-model="selected" ng-value="shipping.title" ng-selected="defaultShipping" ng-click="setPriceShipping(shipping.title,shipping.price)">{{ shipping.title }}</ion-radio>
+            </div>
+
+            <ion-item class="item-avatar" id="page6-list-item16">
+                <h2>Стоимость доставки</h2>
+                <p>{{ shippingPrice }}.00 руб.</p>
+            </ion-item>
+            <h1 id="page6-heading8" style="color:#000000;">Ближайший офис</h1>
+            <label class="item item-select" id="page6-select1" name="select-office">
+                <span class="input-label">Офис:</span>
+                <select ng-model="filialName" ng-options="filial.title as filial.title for filial in orderSettings.getFilialList()" ng-change="changeFilial(filialName)">
+                    <!--<option ng-value="filial.title">{{ filial.title }}</option>
+                    <option>м. Беговая</option>
+                    <option>м. Выхино</option>
+                    <option>м. Домодедовская</option>
+                    <option>м. Курская</option>-->
+                  <!--<option ng-repeat="filial in orderSettings.getFilialList()"
+                          ng-value="filial.title">
+                    {{filial.title}}
+                  </option>-->
+                </select>
+              <!--<p>{{ filialName }}</p>-->
+
+
+            </label>
+          <h3> Стоимость с доставкой </h3>
+          <h2 style="text-align: center;">{{priceWithShipping}}.00 <i>руб</i></h2>
+          <!-- ui-sref="page3"-->
+            <a  id="page6-button9" class="button button-positive  button-block" ng-click="registerOrder()">Оформить заказ</a>
+        </form>
+      <!--<span>data: {{ orderSettings.getTypeProduct() }}</span>-->
+    </ion-content>
+</ion-view>

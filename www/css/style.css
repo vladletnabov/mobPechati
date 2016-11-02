@@ -1,0 +1,28 @@
+/* Empty. Add your own CSS if you like */
+.slider-footer{
+  height: 45px;
+}
+
+.hidden-element{
+  display: none;
+}
+.header-image{
+  height: 250px;
+  max-width: 1024px;
+  width:100%;
+  min-width: 200px;
+  margin:0 auto;
+  background-image: url('../images/stamp-bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+.btn-main-page{
+  border: 1px solid navy;
+  background-color: #387ef5;
+  opacity: 0.7;
+  color: #333;
+
+}
+.padding{
+  padding: 0;
+}

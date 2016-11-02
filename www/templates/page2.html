@@ -1,0 +1,81 @@
+<ion-header-bar class="bar bar-header bar-positive">
+  <div >
+    <h1 class="title">Заказ печати</h1>
+    <button class="button button-icon icon ion-navicon" ng-click="toggleMenu()"></button>
+  </div>
+
+</ion-header-bar>
+<ion-view title="Заказ печати" id="page2">
+    <ion-content padding="false" class="has-header">
+        <div style="margin: 0px; line-height: 250px; text-align: center; background-color: rgb(232, 235, 239);">
+            <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+        </div>
+        <h1 id="page2-heading2" style="color:#000000;">Печать</h1>
+        <div id="page2-button-bar2" class="button-bar">
+            <button id="page2-button4" class="button  button-positive button-block" ng-class="{true: 'button-outline', false: ''}[orderSettings.getTypeStamp()==1]" ng-click="setTypeStamp(0)">Новая </button>
+            <button id="page2-button5" class="button  button-positive button-block" ng-class="{false: 'button-outline', true: ''}[orderSettings.getTypeStamp()==1]" ng-click="setTypeStamp(1)">По оттиску</button>
+        </div>
+        <!--<span>{{ orderSettings.getTypeStamp() }}</span>-->
+        <h1 id="page2-heading3" style="color:#000000;">Оттиск печати</h1>
+        <div id="page2-markdown1" style="color:#000000;">
+          <!--<ion-radio id="page2-radio2" name="file-radio" ng-model="choice" >Прикрепить файл</ion-radio>
+          <ion-radio id="page2-radio3" name="file-radio">Сделать снимок</ion-radio>-->
+
+          <!--<span>{{ orderSettings.getStampImages().length }}</span>-->
+          <ion-list>
+            <ion-item ng-repeat="stampImage in orderSettings.getStampImages() ">
+              <a class="item item-thumbnail-left">
+                <img  file-preview="stampImage" />
+                <h2> {{ stampImage.name }}</h2>
+              </a>
+            </ion-item>
+
+          </ion-list>
+
+          <button id="getRStampFile" style="text-align:right;" class="button button-positive  icon-left ion-android-add-circle" ng-click="openFileDialog()">Добавить оттиск</button>
+          <input type="file" id="fileRStamp" ng-model="newImage" base-sixty-four-input file-changed hidden />
+
+        </div>
+        <h1 id="page2-heading4" style="color:#000000;">Материал клише</h1>
+        <div id="page2-button-bar5" class="button-bar">
+          <button id="page2-button16" class="button  button-positive button-block" ng-class="{true: 'button-outline', false: ''}[orderSettings.getTypeMaterial()==1]" ng-click="setTypeMaterial(0)">Фотополимер</button>
+          <button id="page2-button17" class="button  button-positive button-block" ng-class="{false: 'button-outline', true: ''}[orderSettings.getTypeMaterial()==1]" ng-click="setTypeMaterial(1)">Резина</button>
+        </div>
+        <div id="page2-button-bar3" class="button-bar"></div>
+        <form id="page2-form3" class="list">
+
+            <h1 id="page2-heading5" style="color:#000000;">Оснастка</h1>
+            <div>
+                <ion-slide-box on-slide-changed="slideHasChanged($index)">
+                    <ion-slide ng-repeat="osnastka in orderSettings.getOsnastkaByType(typeProduct)">
+                        <div class="box blue">
+                            <h3 style="text-align: center;">{{ osnastka.title }}</h3>
+                            <div id="logo" style="text-align: center;">
+                                <img ng-src="{{ osnastka.image }}">
+                            </div>
+                            <ion-radio id="osn1" name="osnastka-radio" ng-value="osnastka.title" ng-checked="defaultOsn" ng-model="selected" ng-click="selectOsnastka(osnastka)" >{{ osnastka.title }}</ion-radio>
+                            <div class="slider-footer"></div>
+                        </div>
+                    </ion-slide>
+                </ion-slide-box>
+            </div>
+
+            <ion-item class="item-icon-left item-icon-right" id="page2-list-item6">
+                <i class="icon No Icon"></i>Стоимость: {{ orderSettings.getCostProduct() }}.00 руб
+                <i class="icon ion-ios-cart"></i>
+            </ion-item>
+            <div class="item item-input" id="page2-count-product">
+                <button id="button-plus-count" class="button button-positive icon  ion-plus"  ng-click="addCountProduct()"></button>
+                <input type="number" placeholder=""  ng-model="countProduct" style="text-align:center" />
+                <button id="button-minus-count" class="button button-positive icon ion-minus" ng-click="remCountProduct()"></button>
+            </div>
+            <ion-item class="item-avatar positive" id="page2-list-item8">
+                <h2>Общая стоимость:
+                    <p> {{ orderSettings.getSummOrder() }}.00 руб</p>
+                </h2>
+            </ion-item>
+            <a ui-sref="page6" id="page2-button19" class="button button-positive  button-block" onclick="">Заказать</a>
+            <div id="page2-button-bar4" class="button-bar"></div>
+        </form>
+    </ion-content>
+</ion-view>

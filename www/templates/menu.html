@@ -1,0 +1,25 @@
+<ion-header-bar class="bar bar-header bar-calm">
+  <div >
+    <h1 class="title">Настройки</h1>
+  </div>
+
+</ion-header-bar>
+<ion-view title="Настройки">
+  <ion-content has-header="true" padding="true">
+    <ul class="list">
+      <li class="item">
+        <input type="tel" placeholder="Номер телефона" value="{{ dataForMenu[telNumber]}}"/>
+      </li>
+      <li class="item">
+        <input type="email" placeholder="E-mail" value="{{ dataForMenu[email]}}"/>
+      </li>
+      <li class="item">
+        <input type="text" placeholder="Имя и/или Фамилия" value="{{ dataForMenu[name]}}"/>
+      </li>
+    </ul>
+    <button class="button button-block button-balanced" ng-click="saveData()">
+      Сохранить
+    </button>
+
+  </ion-content>
+</ion-view>

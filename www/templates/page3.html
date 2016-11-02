@@ -1,0 +1,25 @@
+<!--<header class="bar bar-header">
+  <h1 class="title">Title</h1>
+  <button class="button" ng-click="toggleMenu()">Settings</button>
+</header>-->
+<ion-header-bar class="bar bar-header bar-positive">
+  <div >
+    <h1 class="title">Заказ печатей в Печати.РУ</h1>
+    <button class="button button-icon icon ion-navicon" ng-click="toggleMenu()"></button>
+  </div>
+
+</ion-header-bar>
+<ion-view title="Печати.РУ" id="page3">
+
+
+    <ion-content padding="true" class="has-header">
+        <div  class="header-image">
+            <!--<i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>-->
+          <!--<img src="../images/slide0.png" />-->
+        </div>
+        <a ui-sref="page2" id="page3-button6" class="button button-positive button-block">Заказать печать</a>
+        <a ui-sref="page4" id="page3-button7" class="button button-positive button-block">Заказать штамп</a>
+        <a ui-sref="page5" id="page3-button8" class="button button-positive button-block">Заказать факсимиле</a>
+      <!--<p> {{ orderSettings.getFilialData() }} </p>-->
+    </ion-content>
+</ion-view>
