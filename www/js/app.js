@@ -23,8 +23,9 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
 })
 
 .factory('orderSettings', function ( $rootScope, $http ) {
-    var urlData = 'http://pechati.ru/extdata/baseparts/filialsWSunsec.php';
-    var urlRegisterOrder = 'http://json.local/index.php/session-status';
+    //var urlData = 'http://pechati.ru/extdata/baseparts/filialsWSunsec.php';
+    var urlData = 'http://json.pechati.ru/index.php/filial-active';
+    var urlRegisterOrder = 'http://json.pechati.ru/index.php/session-status';
     var filialData = {};
     var filialList = {};
     var typeProduct = 'rstamp';//тип изделия: печать-rstamp, штамп-sqstamp, факсимиле-faximile

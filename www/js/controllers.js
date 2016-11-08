@@ -292,6 +292,8 @@ angular.module('app.controllers', [])
     resultRequest.success(function(data, status, headers, config) {
       //$window.location.href = '/index.html';
       console.log(data);
+      $scope.checkVariable('data', data);
+
       if (data.send == true){
         $scope.successRegisterOrder(data.orderNumber);
       }
@@ -299,10 +301,10 @@ angular.module('app.controllers', [])
     resultRequest.error(function(data, status, headers, config) {
       $scope.errorRegisterOrder();
     });
-    $scope.toggleMenu = function() {
+    /*$scope.toggleMenu = function() {
       //$scope.sideMenuController.toggleRight();
       $ionicSideMenuDelegate.toggleRight();
-    };
+    };*/
 
   }
 
@@ -317,6 +319,19 @@ angular.module('app.controllers', [])
       $window.location.href = '/index.html';
     });
   };
+
+  $scope.checkVariable = function(key, value) {
+    var alertPopup = $ionicPopup.alert({
+      title: 'Key:' + key,
+      template: 'value:' + value
+    });
+
+    alertPopup.then(function(res) {
+      console.log('ok!');
+      //$window.location.href = '/index.html';
+    });
+  };
+
 
   $scope.errorRegisterOrder = function() {
     var confirmPopup = $ionicPopup.confirm({
