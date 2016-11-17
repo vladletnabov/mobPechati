@@ -11,19 +11,41 @@
             <ion-item id="page6-list-item14">{{ typeProduct(orderSettings.getTypeProduct()) }}: {{ typeStamp(orderSettings.getTypeProduct(), orderSettings.getTypeStamp()) }}</ion-item>
             <ion-item id="page6-list-item12">Материал: {{  typeMaterial(orderSettings.getTypeMaterial()) }}</ion-item>
             <ion-item id="page6-list-item13">Оснастка: {{ orderSettings.getTypeOsnastka() }}</ion-item>
+            <ion-item id="page6-list-item15">Размер: {{ orderSettings.getCurrentSize().title }}</ion-item>
+            <ion-item id="page6-list-item16">Дополнительная информация: {{ orderSettings.getStampInfo() }}</ion-item>
             <ion-item id="page6-list-item11">Количество: {{ orderSettings.getCountProduct() }} шт</ion-item>
             <ion-item id="page6-list-item10">Сумма заказа: {{ orderSettings.getSummOrder() }}.00 руб</ion-item>
         </ion-list>
-        <h1 id="page6-heading7" style="color:#000000;">Доставка</h1>
-        <form id="page6-form4" class="list">
-            <!--<ion-radio id="page6-radio5" name="shipping_type"ng-model="choice">Самовывоз из офиса</ion-radio>
-            <ion-radio id="page6-radio6" name="shipping_type">Доставка до метро</ion-radio>
-            <ion-radio id="page6-radio7" name="shipping_type">Доставка по адресу</ion-radio>-->
+        <!-- Блок дополнительных вычислений -->
+        <!--<form id="page6-form4" class="list">-->
+
+            <h1 id="page6-heading9" style="color:#000000;">Срок изготовления</h1>
+            <div ng-repeat="urgent in orderSettings.getUrgent()">
+              <ion-radio name="urgent_type"
+                         ng-model="urgentModel"
+                         ng-value="urgent.title"
+                         ng-selected="urgentSelect"
+                         ng-click="setCurrentUrgent(urgent)">
+                {{ urgent.title }}
+              </ion-radio>
+            </div>
+            <ion-item class="item-avatar" id="page6-list-item18">
+              <h2>Наценка за срочность</h2>
+              <p>{{ urgentPrice }}.00 руб.</p>
+            </ion-item>
+
+            <h1 id="page6-heading7" style="color:#000000;">Доставка</h1>
             <div ng-repeat="shipping in orderSettings.getShipping()">
-            <ion-radio name="shipping_type" ng-model="selected" ng-value="shipping.title" ng-selected="defaultShipping" ng-click="setPriceShipping(shipping.title,shipping.price)">{{ shipping.title }}</ion-radio>
+            <ion-radio name="shipping_type"
+                       ng-model="selected"
+                       ng-value="shipping.title"
+                       ng-selected="defaultShipping"
+                       ng-click="setPriceShipping(shipping)">
+              {{ shipping.title }}
+            </ion-radio>
             </div>
 
-            <ion-item class="item-avatar" id="page6-list-item16">
+            <ion-item class="item-avatar" id="page6-list-item17">
                 <h2>Стоимость доставки</h2>
                 <p>{{ shippingPrice }}.00 руб.</p>
             </ion-item>
@@ -47,9 +69,10 @@
             </label>
           <h3> Стоимость с доставкой </h3>
           <h2 style="text-align: center;">{{priceWithShipping}}.00 <i>руб</i></h2>
+
           <!-- ui-sref="page3"-->
             <a  id="page6-button9" class="button button-positive  button-block" ng-click="registerOrder()">Оформить заказ</a>
-        </form>
+        <!--</form>-->
       <!--<span>data: {{ orderSettings.getTypeProduct() }}</span>-->
     </ion-content>
 </ion-view>

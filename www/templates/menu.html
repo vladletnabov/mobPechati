@@ -8,13 +8,16 @@
   <ion-content has-header="true" padding="true">
     <ul class="list">
       <li class="item">
-        <input type="tel" placeholder="Номер телефона" value="{{ dataForMenu[telNumber]}}"/>
+        <!--<input id="telNumber" type="tel" placeholder="Номер телефона" value="{{ dataForMenu[telNumber]}}"/>-->
+        <input id="telNumber" type="tel" placeholder="Номер телефона" ng-model="menuInputData.telNumber" />
       </li>
       <li class="item">
-        <input type="email" placeholder="E-mail" value="{{ dataForMenu[email]}}"/>
+        <!--<input ng-model="email" type="email" placeholder="E-mail" value="{{ dataForMenu[email]}}"/>-->
+        <input id="email" type="email" placeholder="E-mail" ng-model="menuInputData.email"/>
       </li>
       <li class="item">
-        <input type="text" placeholder="Имя и/или Фамилия" value="{{ dataForMenu[name]}}"/>
+        <!--<input id="userName" type="text" placeholder="Имя и/или Фамилия" value="{{ dataForMenu[name]}}"/>-->
+        <input id="userName" type="text" placeholder="Имя и/или Фамилия" ng-model="menuInputData.userName"/>
       </li>
     </ul>
     <button class="button button-block button-balanced" ng-click="saveData()">

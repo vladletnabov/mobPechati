@@ -11,6 +11,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
+
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -19,10 +20,11 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
   });
 })
 
-.factory('orderSettings', function ( $rootScope, $http ) {
+.factory('orderSettings', function ( $rootScope, $http, serviceDB ) {
     //var urlData = 'http://pechati.ru/extdata/baseparts/filialsWSunsec.php';
     var urlData = 'http://json.pechati.ru/index.php/filial-active';
     var urlRegisterOrder = 'http://json.pechati.ru/index.php/session-status';
@@ -71,22 +73,94 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
         }
       ],
       sqstamp: [
-        {
-          title: 'Ручная малого размера',
-          price:0,
-          image: 'images/ruch-osn.png',
-          selected: true
-        }
+          {
+            title: 'Ручная',
+            subtitle: 'ruch',
+            price: 0,
+            image: 'images/ruch-sqstamp.jpg',
+            selected: true
+          },
+          {
+            title: 'Автоматическая',
+            subtitle: 'auto',
+            price: 0,
+            image: 'images/auto-sqstamp.jpg',
+            selected: false
+          }
       ],
       faximile: [
         {
-          title: 'Ручная малого размера',
-          price:0,
-          image: 'images/ruch-osn.png',
+          title: 'Ручная',
+          subtitle: 'ruch',
+          price: 0,
+          image: 'images/ruch-sqstamp.jpg',
           selected: true
+        },
+        {
+          title: 'Автоматическая',
+          subtitle: 'auto',
+          price: 0,
+          image: 'images/auto-sqstamp.jpg',
+          selected: false
         }
       ]
     };
+    var currentOsnastka = osnastka[0];
+    var osnastkaSizePrice = [
+      //small: {
+      {
+        title:'Маленький (до 20х40мм)',
+        subtitle: 'small',
+        ruch: 0,
+        auto: 290,
+        clishe: 290,
+        selected: true
+      },
+      //middle:{
+      {
+        title:'Средний (до 40х60мм)',
+        subtitle: 'middle',
+        ruch: 0,
+        auto: 450,
+        clishe: 430,
+        selected: false
+      },
+      //big:{
+      {
+        title:'Большой (до 60х40мм)',
+        subtitle: 'big',
+        ruch: 0,
+        auto: 750,
+        clishe: 1310,
+        selected: false
+      }
+    ];
+    var currentSize = osnastkaSizePrice[0];
+  /*{
+      [
+      //small: {
+      {
+        title:'Маленький (до 20х40мм)',
+        ruch: 0,
+        auto: 290,
+        selected: true
+      },
+      //middle:{
+      {
+        title:'Средний (до 40х60мм)',
+        ruch: 0,
+        auto: 450,
+        selected: false
+      },
+      //big:{
+      {
+        title:'Большой',
+        ruch: 0,
+        auto: 750,
+        selected: false
+      },
+    ]
+    };*/
     var priceClishe = {
       rstamp:[
         {
@@ -100,8 +174,30 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
           price: 550
         }
       ],
-      sqstamp:[],
-      faximile:[]
+      sqstamp:[
+        {
+          number: 1,
+          title: 'Резина',
+          price: 50
+        },
+        {
+          number: 0,
+          title: 'Фотополимер',
+          price: 0
+        }
+      ],
+      faximile:[
+        {
+          number: 1,
+          title: 'Резина',
+          price: 50
+        },
+        {
+          number: 0,
+          title: 'Фотополимер',
+          price: 0
+        }
+      ]
     };
     var priceTypeStamp = {
       rstamp: [
@@ -140,21 +236,29 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
       {title: 'Доставка до метро', price: 0},
       {title: 'Доставка по адресу', price: 300}
     ];
+
+    var stampInfo = '';
+    var urgent = [
+      {title: 'На завтра', price: 0},
+      {title: 'Срочно (1-2 часа)', price: 200}
+    ];
+    var currentUrgent = urgent[0];
+  initDB();
   getData();
   getPhoneData();
 
   function getDataForMenu(){
     var checkDataResult = checkSavedData();
     result ={
-      'email': '',
-      'telNumber': '',
-      'name': userName
+      'email': email2,
+      'telNumber': telNumber2,
+      'userName': userName
     };
 
     // проверяем телефонный номер. пишем второй, вводимый пользователем, только тогда, когда он определён.
     // в остальных случаях - первый или пустоту
-    chkTelNumber = checkDataResult['telNumber'];
-    chkTelNumber2 = checkDataResult['telNumber2'];
+    chkTelNumber = getVarDB('telNumber');
+    chkTelNumber2 = getVarDB('telNumber2');
     if ((chkTelNumber.localeCompare('')==0)&&(chkTelNumber2.localeCompare('')==0)) {
       result['telNumber'] = '';
     }
@@ -167,8 +271,8 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
 
     // проверяем email. пишем второй, вводимый пользователем, только тогда, когда он определён.
     // в остальных случаях - первый или пустоту
-    chkEmail = checkDataResult['email'];
-    chkEmail2 = checkDataResult['email2'];
+    chkEmail = getVarDB('email');
+    chkEmail2 = getVarDB('email2');
     if ((chkEmail.localeCompare('')==0)&&(chkEmail2.localeCompare('')==0)) {
       result['email'] = '';
     }
@@ -181,12 +285,16 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
 
     return result;
   }
+
+
+
+
   function getPhoneData() {
     console.log('====> get data from phone account');
     var checkDataResult = checkSavedData();
-    var platform = '';
+    var platform = 'iphone';
     var phoneData = {
-      'platform': '',
+      'platform': platform,
       'telNumber': '',
       'email': ''
     };
@@ -217,25 +325,73 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
     }
   }
   function checkSavedData() {
+    //if (telNumber.localeCompare('')==0)
+    /*serviceDB.initDB();
+    serviceData = serviceDB.getAllData();*/
+
+
+
+    //tNum = serviceData
+    //console.debug(serviceData);
+    srvTelNumber = getVarDB('telNumber');
+    console.debug('srvTelNumber: ' + srvTelNumber);
+    srvTelNumber2 = getVarDB('telNumber2');
+    console.debug('srvTelNumber2: ' + srvTelNumber2);
+    srvEmail = getVarDB('email');
+    console.debug('srvEmail: ' + srvEmail);
+    srvEmail2 = getVarDB('email2');
+    console.debug('srvEmail2: ' + srvEmail2);
+    srvUserName = getVarDB('userName');
+    console.debug('srvUserName: ' + srvUserName);
+    if (srvTelNumber.localeCompare('')!=0){
+      telNumber = srvTelNumber;
+    }
+    if (srvTelNumber2.localeCompare('')!=0){
+      telNumber2 = srvTelNumber2;
+    }
+    if (srvEmail.localeCompare('')!=0){
+      email = srvEmail;
+    }
+    if (srvEmail2.localeCompare('')!=0){
+      email2 = srvEmail2;
+    }
+    userName = srvUserName;
     result = {
-      'telNumber': '',
-      'email': '',
-      'telNumber2': '',
-      'email2': '',
+      'telNumber': telNumber,
+      'email': email,
+      'telNumber2': telNumber2,
+      'email2': email2,
+      'userName': userName,
     };
     //
     return result;
   }
 
   function getPlatform(){
-    result ='';
-    //
+    result ='iphone';
+
+    if (ionic.Platform.isAndroid()){
+      result = 'android';
+    }
+    if (ionic.Platform.isWebView()){
+      result = 'webview';
+    }
+    if (ionic.Platform.isIPad()){
+      result = 'ipad';
+    }
+    if (ionic.Platform.isIOS()){
+      result = 'iphone';
+    }
+    if (ionic.Platform.isWindowsPhone()){
+      result = 'windows';
+    }
+    console.debug('<<==! platform: ' + result);
     return result;
   }
 
   function getAndroidData() {
     result = {
-      'platform': '',
+      'platform': 'android',
       'telNumber': '',
       'email': ''
     };
@@ -244,6 +400,57 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
 
   }
 
+  function initDB(){
+    //if (window.localStorage)
+    /*_hwInfo.insert({
+     'telNumber':'',
+     'telNumber2':'',
+     'email':'',
+     'email2':'',
+     'platform':'',
+     'userName': ''
+     });*/
+    console.log('DA==> telNumber: ' + getVarDB('telNumber'));
+    if ((getVarDB('telNumber')===undefined)||(getVarDB('telNumber')===null)){
+      setVarDB('telNumber','');
+    }
+    console.log('DB==> telNumber: ' + getVarDB('telNumber'));
+
+    if ((getVarDB('telNumber2')===undefined )||(getVarDB('telNumber2')===null)){
+      setVarDB('telNumber2','');
+    }
+    console.log('DB==> telNumber2: ' + getVarDB('telNumber2'));
+
+    if ((getVarDB('email')===undefined )||(getVarDB('email')===null)){
+      setVarDB('email','');
+    }
+    console.log('DB==> email: ' + getVarDB('email'));
+
+    if ((getVarDB('email2')===undefined )||(getVarDB('email2')===null)){
+      setVarDB('email2','');
+    }
+    console.log('DB==> email2: ' + getVarDB('email2'));
+
+    if ((getVarDB('platform')===undefined )||(getVarDB('platform')===null)){
+      setVarDB('platform','');
+    }
+    console.log('DB==> platform: ' + getVarDB('platform'));
+
+    if ((getVarDB('userName')===undefined )||(getVarDB('userName')===null)){
+      setVarDB('userName','');
+    }
+    console.log('DB==> userName: ' + getVarDB('userName'));
+
+    console.log('init localStorage completed');
+    console.log(window.localStorage);
+
+  }
+  function setVarDB($key, $value){
+    window.localStorage.setItem($key,$value);
+  }
+  function getVarDB($key){
+    return window.localStorage.getItem($key);
+  }
 
 
   function getData(){
@@ -328,11 +535,23 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
       setTelNumber:function (value) {
         telNumber = value;
       },
+      getTelNumber2: function () {
+        return telNumber2;
+      },
+      setTelNumber2:function (value) {
+        telNumber2 = value;
+      },
       getEmail: function () {
         return email;
       },
+      getEmail2: function () {
+      return email2;
+    },
       setEmail: function (value) {
         email = value;
+      },
+      setEmail2: function (value) {
+        email2 = value;
       },
       getCountProduct: function () {
         return countProducts;
@@ -409,6 +628,24 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
       getOsnastkaRstamp: function () {
         return osnastka.rstamp;
       },
+      getOsnastkaSqStamp: function () {
+        return osnastka.sqstamp;
+      },
+      getOsnastkaSizePrice: function () {
+        return osnastkaSizePrice;
+      },
+      getCurrentOsnastka: function () {
+        return currentOsnastka;
+      },
+      setCurrentOsnastka: function (value) {
+        currentOsnastka = value;
+      },
+      getCurrentSize: function () {
+        return currentSize;
+      },
+      setCurrentSize: function (value) {
+        currentSize = value;
+      },
       getPriceClishe: function () {
         return priceClishe;
       },
@@ -453,6 +690,8 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
         return result;
       },
       getPriceClisheByNumber: function (type, number) {
+        console.debug('app->getPriceClisheByNumber');
+        console.debug('type: ' + type + ', number: ' + number);
         var result='';
         var typeProduct = [];
         switch (type) {
@@ -535,8 +774,147 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
       getUrlRegisterOrder: function () {
         return urlRegisterOrder;
       },
-      getDataForMenu: getDataForMenu()
+      setUserName: function(value){
+        userName = value;
+      },
+      getPlatform:getPlatform,
+      getUserName: function(){
+        return userName;
+      },
+      getDataForMenu: getDataForMenu(),
+      setDataFromMenu: function(value){
+        console.debug('setDataFromMenu');
+        console.debug(value);
 
-    };
+        email2 = value.email;
+        setVarDB('email2', value.email);
+        telNumber2 = value.telNumber;
+        setVarDB('telNumber2', value.telNumber);
+        userName = value.userName;
+        setVarDB('userName', value.userName);
+        /*serviceDB.updElementData('email2', email2);
+        serviceDB.updElementData('telNumber2', telNumber2);
+        serviceDB.updElementData('userName', userName);*/
+        //serviceDB.updAllData(value);
+      },
+      getStampInfo:function(){
+        return stampInfo;
+      },
+      setStampInfo:function(value){
+        stampInfo=value;
+      },
+      getUrgent:function(){
+        return urgent;
+      },
+      setCurrentUrgent: function (value) {
+        currentUrgent=value;
+      },
+      getCurrentUrgent: function () {
+        return currentUrgent;
+      }
+
+
+  };
 })
 
+.factory('serviceDB', ['$q', 'Loki', serviceDB]);
+
+function serviceDB($q, Loki) {
+  var _db;
+  var _hwInfo;
+
+  function initDB() {
+    var adapter = new LokiCordovaFSAdapter({"prefix": "loki"});
+    _db = new Loki('serviceDB',
+      {
+        autosave: true,
+        autoload: true,
+        //autoloadCallback: loadHandler,
+        autosaveInterval: 100000, // 1 second
+        adapter: adapter
+      });
+  };
+
+  function loadHandler(){
+    _hwInfo = _db.getCollection('hwInfo');
+    if (_hwInfo === null) {
+      _hwInfo = _db.addCollection('hwInfo');
+      console.debug('!!!=> Load default data for serviceDB');
+      _hwInfo.insert({
+        'telNumber':'',
+        'telNumber2':'',
+        'email':'',
+        'email2':'',
+        'platform':'',
+        'userName': ''
+      });
+      _db.saveDatabase();
+    }
+  }
+
+  function getAllData() {
+    /*return $q(function (resolve, reject) {
+
+      var options = {
+        hwInfo: {
+          proto: Object,
+          inflate: function (src, dst) {
+            var prop;
+            for (prop in src) {
+              if (prop === 'Date') {
+                dst.Date = new Date(src.Date);
+              } else {
+                dst[prop] = src[prop];
+              }
+            }
+          }
+        }
+      };
+
+      _db.loadDatabase(options, function () {
+        _hwInfo = _db.getCollection('hwInfo');
+
+        if (!_birthdays) {
+          _hwInfo = _db.addCollection('hwInfo');
+        }
+
+        resolve(_hwInfo.data);
+      });
+    });*/
+    loadHandler();
+    return _hwInfo;
+  };
+
+  function addAllData($obj){
+    //loadHandler();
+    _hwInfo.insert($obj);
+  }
+  function updAllData($obj) {
+    //loadHandler();
+    // console.debug('updAllData');
+    console.debug($obj);
+
+    /*console.debug('|||=> checking telNumber:' + _hwInfo.data[0].telNumber + ';');
+    _hwInfo.update($obj);*/
+    for(var k in $obj) {
+      console.log(k, $obj[k]);
+    }
+  }
+  function delAllData($obj) {
+    //loadHandler();
+    _hwInfo.remove($obj);
+  }
+  function updElementData($key, $value){
+    _hwInfo.update({$key: $value});
+  }
+
+  return {
+    initDB: initDB,
+    getAllData: getAllData,
+    addAllData: addAllData,
+    updAllData: updAllData,
+    delAllData: delAllData,
+    loadHandler: loadHandler,
+    updElementData: updElementData
+  };
+}

@@ -1,4 +1,109 @@
+<ion-header-bar class="bar bar-header bar-positive">
+  <div >
+    <h1 class="title">Заказ штампа</h1>
+    <button class="button button-icon icon ion-navicon" ng-click="toggleMenu()"></button>
+  </div>
+
+</ion-header-bar>
 <ion-view title="Заказ штампа" id="page4">
-    <ion-content padding="true" class="has-header"></ion-content>
-  <span>{{ orderSettings.getTypeProduct() }}</span>
+  <ion-content padding="false" class="has-header">
+    <span>{{ orderSettings.getTypeProduct() }}</span>
+    <div style="margin: 0px; line-height: 250px; text-align: center; background-color: rgb(232, 235, 239);">
+      <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+    </div>
+    <h1 id="page4-heading2" style="color:#000000;">Штамп</h1>
+    <div id="page4-button-bar2" class="button-bar">
+      <button id="page4-button4" class="button  button-positive button-block" ng-class="{true: 'button-outline', false: ''}[orderSettings.getTypeStamp()==1]" ng-click="setTypeStamp(0)">Новая </button>
+      <button id="page4-button5" class="button  button-positive button-block" ng-class="{false: 'button-outline', true: ''}[orderSettings.getTypeStamp()==1]" ng-click="setTypeStamp(1)">По оттиску</button>
+    </div>
+    <!--<span>{{ orderSettings.getTypeStamp() }}</span>-->
+    <h1 id="page4-heading3" style="color:#000000;">Оттиск штампа</h1>
+    <div id="page4-markdown1" style="color:#000000;">
+      <!--<ion-radio id="page4-radio2" name="file-radio" ng-model="choice" >Прикрепить файл</ion-radio>
+      <ion-radio id="page4-radio3" name="file-radio">Сделать снимок</ion-radio>-->
+
+      <!--<span>{{ orderSettings.getStampImages().length }}</span>-->
+      <ion-list>
+        <ion-item ng-repeat="stampImage in orderSettings.getStampImages() ">
+          <a class="item item-thumbnail-left">
+            <img  file-preview="stampImage" />
+            <h2> {{ stampImage.name }}</h2>
+          </a>
+        </ion-item>
+
+      </ion-list>
+
+      <button id="getSqStampFile" style="text-align:right;" class="button button-positive  icon-left ion-android-add-circle" ng-click="openFileDialog()">Добавить оттиск</button>
+      <input type="file" id="fileSqStamp" ng-model="newImage" base-sixty-four-input file-changed hidden />
+      <ion-item>
+        <ion-label><h3>Информация на штампе</h3></ion-label>
+        <textarea placeholder="Текст на штампе" class="textarea-info"
+                  ng-model="textInfo"
+                  ng-change="setTextInfo(textInfo)"></textarea>
+      </ion-item>
+    </div>
+    <h1>Размер штампа</h1>
+    <div id="page4-sizestamp" style="color:#000000;">
+      <ion-radio ng-repeat="osnSize in orderSettings.getOsnastkaSizePrice()"
+                 ng-model="sizeSelect"
+                 ng-checked="sizeDefailt"
+                 ng-click="chkSize(osnSize)"
+                 ng-value="osnSize.title">
+        {{ osnSize.title }}
+      </ion-radio>
+      <ion-item><h3>*Примечание:</h3>Если размер клише/штампа меньше указанных параметров, цена может быть меньше. Менеджер свяжется и уточнит цену.</ion-item>
+      <!--<ion-radio ng-model="sizeStamp" value="small">Маленький (до 20х40мм)</ion-radio>
+      <ion-radio ng-model="sizeStamp" value="middle">Средний (до 40х60мм)</ion-radio>
+      <ion-radio ng-model="sizeStamp" value="big">Большой</ion-radio>-->
+    </div>
+
+    <h1 id="page4-heading4" style="color:#000000;">Материал клише</h1>
+    <div id="page4-button-bar5" class="button-bar">
+      <button id="page4-button16" class="button  button-positive button-block" ng-class="{true: 'button-outline', false: ''}[orderSettings.getTypeMaterial()==1]" ng-click="setTypeMaterial(0)">Фотополимер</button>
+      <button id="page4-button17" class="button  button-positive button-block" ng-class="{false: 'button-outline', true: ''}[orderSettings.getTypeMaterial()==1]" ng-click="setTypeMaterial(1)">Резина</button>
+    </div>
+    <div id="page4-button-bar3" class="button-bar"></div>
+    <form id="page4-form3" class="list">
+
+      <h1 id="page4-heading5" style="color:#000000;">Оснастка</h1>
+      <div>
+        <ion-slide-box on-slide-changed="slideHasChanged($index)">
+          <ion-slide ng-repeat="osnastka in orderSettings.getOsnastkaByType(typeProduct)">
+            <div class="box blue">
+              <h3 style="text-align: center;">{{ osnastka.title }}</h3>
+              <div id="logo" style="text-align: center;">
+                <img ng-src="{{ osnastka.image }}">
+              </div>
+              <ion-radio id="osn1" name="osnastka-radio"
+                         ng-value="osnastka.title"
+                         ng-checked="defaultOsn"
+                         ng-model="selected"
+                         ng-click="selectOsnastka(osnastka)" >
+                {{ osnastka.title }}
+              </ion-radio>
+              <div class="slider-footer"></div>
+            </div>
+          </ion-slide>
+        </ion-slide-box>
+      </div>
+
+      <ion-item class="item-icon-left item-icon-right" id="page4-list-item6">
+        <i class="icon No Icon"></i>Стоимость: {{ orderSettings.getCostProduct() }}.00 руб
+        <i class="icon ion-ios-cart"></i>
+      </ion-item>
+      <div class="item item-input" id="page4-count-product">
+        <button id="button-plus-count" class="button button-positive icon  ion-plus"  ng-click="addCountProduct()"></button>
+        <input type="number" placeholder=""  ng-model="countProduct" style="text-align:center" />
+        <button id="button-minus-count" class="button button-positive icon ion-minus" ng-click="remCountProduct()"></button>
+      </div>
+      <ion-item class="item-avatar positive" id="page4-list-item8">
+        <h2>Общая стоимость:
+          <p> {{ orderSettings.getSummOrder() }}.00 руб</p>
+        </h2>
+      </ion-item>
+      <a ui-sref="page6" id="page4-button19" class="button button-positive  button-block" onclick="">Заказать</a>
+      <div id="page4-button-bar4" class="button-bar"></div>
+    </form>
+  </ion-content>
 </ion-view>
+

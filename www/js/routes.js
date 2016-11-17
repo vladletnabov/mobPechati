@@ -25,7 +25,8 @@ angular.module('app.routes', [])
         templateUrl: 'templates/page2.html'
       },
       'sideView': {
-        templateUrl: 'templates/menu.html'
+        templateUrl: 'templates/menu.html',
+        controller: 'menuCtrl'
       }
     }
   })
@@ -40,7 +41,8 @@ angular.module('app.routes', [])
         templateUrl: 'templates/page3.html'
       },
       'sideView': {
-        templateUrl: 'templates/menu.html'
+        templateUrl: 'templates/menu.html',
+        controller: 'menuCtrl'
       }
     }
     /*views: {
@@ -52,14 +54,34 @@ angular.module('app.routes', [])
 
   .state('page4', {
     url: '/sqstamp',
-    templateUrl: 'templates/page4.html',
-    controller: 'page4Ctrl'
+    /*templateUrl: 'templates/page4.html',
+    controller: 'page4Ctrl'*/
+    views: {
+      'baseView': {
+        controller: 'page4Ctrl',
+        templateUrl: 'templates/page4.html'
+      },
+      'sideView': {
+        templateUrl: 'templates/menu.html',
+        controller: 'menuCtrl'
+      }
+    }
   })
 
   .state('page5', {
     url: '/faximile',
-    templateUrl: 'templates/page5.html',
-    controller: 'page5Ctrl'
+    /*templateUrl: 'templates/page5.html',
+    controller: 'page5Ctrl'*/
+    views: {
+      'baseView': {
+        controller: 'page5Ctrl',
+        templateUrl: 'templates/page5.html'
+      },
+      'sideView': {
+        templateUrl: 'templates/menu.html',
+        controller: 'menuCtrl'
+      }
+    }
   })
 
   .state('page6', {
@@ -72,7 +94,8 @@ angular.module('app.routes', [])
         templateUrl: 'templates/page6.html'
       },
       'sideView': {
-        templateUrl: 'templates/menu.html'
+        templateUrl: 'templates/menu.html',
+        controller: 'menuCtrl'
       }
     }
   })

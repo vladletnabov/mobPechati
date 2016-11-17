@@ -34,6 +34,12 @@
 
           <button id="getRStampFile" style="text-align:right;" class="button button-positive  icon-left ion-android-add-circle" ng-click="openFileDialog()">Добавить оттиск</button>
           <input type="file" id="fileRStamp" ng-model="newImage" base-sixty-four-input file-changed hidden />
+          <ion-item>
+              <ion-label><h3>Информация о печати</h3></ion-label>
+              <textarea placeholder="Укжите ОГРН, название и прочую плохо читаемую информацию" class="textarea-info"
+                    ng-model="textInfo"
+                    ng-change="setTextInfo(textInfo)"></textarea>
+          </ion-item>
 
         </div>
         <h1 id="page2-heading4" style="color:#000000;">Материал клише</h1>
@@ -77,5 +83,6 @@
             <a ui-sref="page6" id="page2-button19" class="button button-positive  button-block" onclick="">Заказать</a>
             <div id="page2-button-bar4" class="button-bar"></div>
         </form>
+
     </ion-content>
 </ion-view>
