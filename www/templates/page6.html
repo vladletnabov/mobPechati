@@ -69,7 +69,22 @@
             </label>
           <h3> Стоимость с доставкой </h3>
           <h2 style="text-align: center;">{{priceWithShipping}}.00 <i>руб</i></h2>
+          <div id="register-window">
+            <div class="popup-container popup-showing active" ng-class="cssClass">
+              <div class="overlay-load"></div>
+              <div class="visible-load">
+                <div class="popup">
+                  <div class="popup-head">
+                    <h3 class="popup-title ng-binding" ng-bind-html="title">Регистрация</h3>
+                    <!-- ngIf: subTitle -->
+                  </div>
+                  <div class="popup-body"><ion-spinner icon="ios"></ion-spinner></div>
 
+                </div>
+
+              </div>
+            </div>
+          </div>
           <!-- ui-sref="page3"-->
             <a  id="page6-button9" class="button button-positive  button-block" ng-click="registerOrder()">Оформить заказ</a>
         <!--</form>-->

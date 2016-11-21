@@ -479,6 +479,21 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
   }
 
   return {
+      setDefailtValues: function () {
+        typeStamp = 0;
+        typeMaterial = 0;
+        typeOsnastka = '';
+        stampImages = [];
+        stampImages64 = [];
+        typeShipping = 0;
+        countProducts = 1;
+        costProduct = 0;
+        summOrder = 0;
+        currentOsnastka = osnastka[0];
+        currentSize = osnastkaSizePrice[0];
+        stampInfo = '';
+        currentUrgent = urgent[0];
+      },
       getTypeProduct: function () {
         return typeProduct;
       },

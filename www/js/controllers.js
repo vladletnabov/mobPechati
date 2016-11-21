@@ -400,6 +400,9 @@ angular.module('app.controllers', [])
 .controller('page6Ctrl', function ($scope, $state, $ionicHistory, $ionicPopup, $window, $http, $base64, orderSettings, $ionicSideMenuDelegate, $ionicLoading) {
   //orderSettings.setTypeStamp(6);
   //$scope.typeProduct=orderSettings.getTypeProduct();
+  $scope.$on('$ionicView.enter', function(){
+    $scope.priceWithShipping = $scope.orderSettings.getSummOrder();
+  });
   orderSettings.setCurrentUrgent(orderSettings.getUrgent()[0]);
   $scope.urgentPrice = orderSettings.getCurrentUrgent().price;
   $scope.urgentSelect = orderSettings.getCurrentUrgent().title;
@@ -483,9 +486,11 @@ angular.module('app.controllers', [])
     $ionicLoading.show({
       template: '<ion-spinner icon="bubbles"></ion-spinner>Регистрация... ',
       //duration: 3000
-    });/*.then(function(){
-      console.log("The loading indicator is now displayed");
-    });*/
+    })
+      .then(function(){
+        console.log("The loading indicator is now displayed");
+        $scope.onlyOrderRegister();
+    });
   };
   $scope.hideLoading = function(){
     $ionicLoading.hide();/*.then(function(){
@@ -496,10 +501,24 @@ angular.module('app.controllers', [])
   $scope.registerOrder  = function () {
     //
     $scope.showLoading();
+    //document.getElementById('register-window').style.display = 'block'; classList.add("foo");
+    //document.getElementById('register-window').classList.add("active");
     console.log('register order');
+    //$scope.onlyOrderRegister();
+
+    /*$scope.toggleMenu = function() {
+      //$scope.sideMenuController.toggleRight();
+      $ionicSideMenuDelegate.toggleRight();
+    };*/
+
+  }
+
+  $scope.onlyOrderRegister = function () {
     if (($scope.orderSettings.getEmail2().localeCompare('')==0)||($scope.orderSettings.getTelNumber2()==0)||($scope.orderSettings.getUserName()==0)){
       console.debug('have error - absent contact data');
       $scope.hideLoading();
+      //document.getElementById('register-window').style.display = 'none';
+      //document.getElementById('register-window').classList.remove("active");
       $scope.showAlert();
 
     }
@@ -548,13 +567,14 @@ angular.module('app.controllers', [])
         headers : {
           'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
         }}
-      );
-      resultRequest.success(function(data, status, headers, config) {
+      ).success(function(data, status, headers, config) {
         //$window.location.href = '/index.html';
         console.log(data);
         //$scope.checkVariable('data', data);
         console.log('sended!');
         $scope.hideLoading();
+        //document.getElementById('register-window').style.display = 'none';
+        //document.getElementById('register-window').classList.remove("active");
         console.debug('====> data.send: ' + data.send + 'data[send]: ' + data['send']);
         if (data['send'] == true){
           $scope.successRegisterOrder(data.orderNumber);
@@ -563,16 +583,12 @@ angular.module('app.controllers', [])
           $scope.errorRegisterOrder();
         }
       });
-      /*resultRequest.error(function(data, status, headers, config) {
-        $scope.errorRegisterOrder();
-      });*/
+
+      //$scope.showLoading();
+      //resultRequest.error(function(data, status, headers, config) {
+      //  $scope.errorRegisterOrder();
+      //});
     }
-
-    /*$scope.toggleMenu = function() {
-      //$scope.sideMenuController.toggleRight();
-      $ionicSideMenuDelegate.toggleRight();
-    };*/
-
   }
 
   $scope.successRegisterOrder = function(value) {
@@ -587,7 +603,8 @@ angular.module('app.controllers', [])
       //$location.path('/');
       $ionicHistory.nextViewOptions({
         historyRoot: true
-      })
+      });
+      orderSettings.setDefailtValues();
       $state.transitionTo("page3");
     });
   };
