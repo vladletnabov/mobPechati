@@ -500,11 +500,11 @@ angular.module('app.controllers', [])
 
   $scope.registerOrder  = function () {
     //
-    $scope.showLoading();
-    //document.getElementById('register-window').style.display = 'block'; classList.add("foo");
+    //$scope.showLoading();
+    document.getElementById('register-window').style.display = 'flex'; //classList.add("foo");
     //document.getElementById('register-window').classList.add("active");
     console.log('register order');
-    //$scope.onlyOrderRegister();
+    $scope.onlyOrderRegister();
 
     /*$scope.toggleMenu = function() {
       //$scope.sideMenuController.toggleRight();
@@ -516,8 +516,8 @@ angular.module('app.controllers', [])
   $scope.onlyOrderRegister = function () {
     if (($scope.orderSettings.getEmail2().localeCompare('')==0)||($scope.orderSettings.getTelNumber2()==0)||($scope.orderSettings.getUserName()==0)){
       console.debug('have error - absent contact data');
-      $scope.hideLoading();
-      //document.getElementById('register-window').style.display = 'none';
+      //$scope.hideLoading();
+      document.getElementById('register-window').style.display = 'none';
       //document.getElementById('register-window').classList.remove("active");
       $scope.showAlert();
 
@@ -572,8 +572,8 @@ angular.module('app.controllers', [])
         console.log(data);
         //$scope.checkVariable('data', data);
         console.log('sended!');
-        $scope.hideLoading();
-        //document.getElementById('register-window').style.display = 'none';
+        //$scope.hideLoading();
+        document.getElementById('register-window').style.display = 'none';
         //document.getElementById('register-window').classList.remove("active");
         console.debug('====> data.send: ' + data.send + 'data[send]: ' + data['send']);
         if (data['send'] == true){

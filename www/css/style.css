@@ -32,26 +32,43 @@
   border-left: 1px solid #dedede;
 }
 .overlay-load {
-  background: #000;
+  background: #2d2d2d;
   position: fixed;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
-  z-index: 1000;
-  opacity: .5;
+  z-index: 51000;
+  opacity: .8;
 }
 .visible-load {
-  background: #fff;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  margin-top: -200px;
-  overflow: hidden;
-  z-index: 2000;
-  width: 200px;
-  padding: 0px;
-  margin-left: -250px;
+  /*background: #061329;*/
+  /*position: fixed;*/
+  display: flex;
+  align-items:flex-end;
+  justify-content:center;
+  align-self: center;
+  min-height:100%;
+  margin-bottom: 150px;
+
+}
+.visible-load div.message{
+
+  min-height: 60px;
+  min-width: 150px;
+  margin-bottom: 150px;
+  background-color: #000;
+  border: 1px solid #000;
+  opacity: 1;
+  border-radius: 5px;
+  color:#fff;
+  text-align: center;
+}
+.register-flex{
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 }
 
 #register-window h2 {
@@ -67,4 +84,21 @@
 }
 #register-window {
   display: none;
+  /*left:0;
+  top:0;
+  bottom: 0;
+  right: 0;
+  position: fixed;*/
+  /*top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 50000;*/
+
 }
+/*ion-spinner {
+  display: block;
+  margin: auto;
+  text-align: center;
+}*/

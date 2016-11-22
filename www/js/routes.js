@@ -11,6 +11,7 @@ angular.module('app.routes', [])
 
 
   .state('page2', {
+    cache: false,
     url: '/rstamp',
     /*templateUrl: 'templates/page2.html',
     controller: 'page2Ctrl'*/
@@ -32,6 +33,7 @@ angular.module('app.routes', [])
   })
 
   .state('page3', {
+    cache: false,
     url: '/index',
     /*templateUrl: 'templates/page3.html',
     controller: 'page3Ctrl'*/
@@ -53,6 +55,7 @@ angular.module('app.routes', [])
   })
 
   .state('page4', {
+    cache: false,
     url: '/sqstamp',
     /*templateUrl: 'templates/page4.html',
     controller: 'page4Ctrl'*/
@@ -69,6 +72,8 @@ angular.module('app.routes', [])
   })
 
   .state('page5', {
+
+    cache: false,
     url: '/faximile',
     /*templateUrl: 'templates/page5.html',
     controller: 'page5Ctrl'*/
@@ -85,6 +90,8 @@ angular.module('app.routes', [])
   })
 
   .state('page6', {
+
+    cache: false,
     url: '/sale-order',
    /* templateUrl: 'templates/page6.html',
     controller: 'page6Ctrl'*/

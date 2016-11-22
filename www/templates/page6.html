@@ -4,7 +4,7 @@
     <button class="button button-icon icon ion-navicon" ng-click="toggleMenu()"></button>
   </div>
 </ion-header-bar>
-<ion-view title="Оформить заказ" id="page6">
+<ion-nav-view title="Оформить заказ" id="page6">
     <ion-content padding="true" class="has-header">
         <h1 id="page6-heading6" style="color:#000000;">Описание заказа</h1>
         <ion-list id="page6-list3">
@@ -70,24 +70,27 @@
           <h3> Стоимость с доставкой </h3>
           <h2 style="text-align: center;">{{priceWithShipping}}.00 <i>руб</i></h2>
           <div id="register-window">
-            <div class="popup-container popup-showing active" ng-class="cssClass">
+            <div class="overlay-load">
+              <div class="visible-load"><div class="message"><ion-spinner icon="ios"></ion-spinner><div class="register-flex">Регистрация...</div></div></div>
+            </div>
+
+            <!--<div class="popup-container popup-showing active" ng-class="cssClass">
               <div class="overlay-load"></div>
               <div class="visible-load">
                 <div class="popup">
                   <div class="popup-head">
                     <h3 class="popup-title ng-binding" ng-bind-html="title">Регистрация</h3>
-                    <!-- ngIf: subTitle -->
                   </div>
                   <div class="popup-body"><ion-spinner icon="ios"></ion-spinner></div>
 
                 </div>
 
               </div>
-            </div>
+            </div>-->
           </div>
           <!-- ui-sref="page3"-->
             <a  id="page6-button9" class="button button-positive  button-block" ng-click="registerOrder()">Оформить заказ</a>
         <!--</form>-->
       <!--<span>data: {{ orderSettings.getTypeProduct() }}</span>-->
     </ion-content>
-</ion-view>
+</ion-nav-view>
